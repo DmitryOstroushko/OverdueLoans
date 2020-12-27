@@ -24,6 +24,15 @@ After that the table PDCL will be filled with tha data.
 4. To get a report: just run the SQL script from the file [GetOverdueLoans.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/GetOverdueLoans.sql).  
 As a result (for the example above) the script creates a table below:  
 
++----------+  
+|  Deal    |  
++----------+  
+|  111111  |  
++----------+  
+|  222221  |  
++----------+  
+
+
 |  Deal  | AfterCurrentRowAmount | RunningOverdue | OverduePeriod |  
 +--------+-----------------------+----------------+---------------+  
 | 111111 |                  6900 |  2009-12-12    |          4033 |  
