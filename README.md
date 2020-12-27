@@ -21,11 +21,12 @@ In the case the table PDCL will be dropped from a server if exists and then will
 3. To fill the table with data: just run the SQL script from the file [TableData.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/TableData.sql).  
 After that the table PDCL will be filled with tha data.  
 
-4. To get a report: just run the SQL script from the file [GetOverdueLoans.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/GetOverdueLoans.sql).  As a result (for the example above) the script creates a table below:  
+4. To get a report: just run the SQL script from the file [GetOverdueLoans.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/GetOverdueLoans.sql).  
+As a result (for the example above) the script creates a table below:  
 
   deal  | aftercurrentrowamount | runningoverdue | overdueperiod  
---------+-----------------------+----------------+--------------- 
- 111111 |                  6900 | 2009-12-12     |          4033 
- 222221 |                  5000 | 2009-12-20     |          4025 
+--------+-----------------------+----------------+---------------  
+ 111111 |                  6900 | 2009-12-12     |          4033  
+ 222221 |                  5000 | 2009-12-20     |          4025  
 
 This project is a very simple one with simultaneously 
