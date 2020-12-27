@@ -1,0 +1,54 @@
+Task. 
+Write scripts in any known SQL language to get a list of loans that have outstanding  
+debt at the time of calculation, and calculate for each such loan:  
+  1. the Total (accumulated amount of overdue debt, outstanding (unpaid) at the date of calculation.  
+  2. The start date of the current (latest) delay. The start date of the delay in this task is understood as  
+  the first date of a continuous period in which the total amount of overdue outstanding debt is > 0.  
+  Note that there may be several periods of delay.  
+  3. The number of days of the current delay. 
+
+
+Structure
+Table PDCL - contains information about overdue payments of unpaid loan amounts and repayments  
+of overdue debt.
+  
++----------+-------------------------------------------------------------------+  
+| Date     | Date of operation                                                 |  
+| Customer | Client Number                                                     |  
+| Deal     | Load number                                                       |  
+| Currecncy| Loan currency                                                     |  
+| Sum      | Amount deferred ( " + " ) or paid ("-")                           |  
++----------+-------------------------------------------------------------------+  
+
+Example:  
++----------+----------+----------+----------+----------+  
+|  Date    | Customer |  Deal    | Currency | Sum      |  
++----------+----------+----------+----------+----------+  
+|12.12.2009| 111110   | 111111   | RUR      |   12 000 |  
++----------+----------+----------+----------+----------+  
+|25.12.2009| 111110   | 111111   | RUR      |    5 000 |  
++----------+----------+----------+----------+----------+  
+|12.12.2009| 111110   | 122222   | RUR      |   10 000 |  
++----------+----------+----------+----------+----------+  
+|12.01.2010| 111110   | 111111   | RUR      |  -10 100 |  
++----------+----------+----------+----------+----------+  
+|20.11.2009| 220000   | 222221   | RUR      |   25 000 |  
++----------+----------+----------+----------+----------+  
+|20.12.2009| 220000   | 222221   | RUR      |   20 000 |  
++----------+----------+----------+----------+----------+  
+|31.12.2009| 220001   | 222221   | RUR      |  -10 000 |  
++----------+----------+----------+----------+----------+  
+|29.12.2009| 111110   | 222221   | RUR      |  -10 000 |  
++----------+----------+----------+----------+----------+  
+|27.11.2009| 222200   | 220001   | RUR      |  -30 000 |  
++----------+----------+----------+----------+----------+  
+
+A single customer can have multiple credits. Co-borrowers can make payments on the loan.  
+If a customer who has a loan misses the next payment on the loan, then he has a problem  
+late payment. In the PCDL table, the corresponding entry appears, where Sum is the unpaid 
+amount (with a positive sign). If the client then makes a payment (full amount or part of it), 
+a new entry appears in the table, where Sum is the amount paid (with a "- " sign). It should be noted 
+that the payment of the client does not necessarily extinguish the accumulated debt, it can only be  
+part of the debt. 
+In this example, the loan 111111 has an outstanding overdue debt in the amount  
+of 6,900 rubles.(12 000 + 5 000 - 10 100), the start date of the current delay is 12.12.2009.
