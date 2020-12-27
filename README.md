@@ -15,66 +15,17 @@ There is an example for PostrgeSQL server:
 
 sudo -u clianne psql  
 
-2. To create the table:  
+2. To create the table: just run the SQL script from the file [CreateTable.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/CreateTable.sql).  
+In the case the table PDCL will be dropped from a server if exists and then will be created again with required structure.  
 
-DROP TABLE IF EXISTS PDCL;  
-CREATE TABLE IF NOT EXISTS PDCL  
-(  
-    Date DATE,  
-    Customer INT,  
-    Deal INT,  
-    Currency VARCHAR(3),  
-    Sum FLOAT  
-);  
+3. To fill the table with data: just run the SQL script from the file [TableData.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/TableData.sql).  
+After that the table PDCL will be filled with tha data.  
 
-3. To fill the table with data:  
+4. To get a report: just run the SQL script from the file [GetOverdueLoans.sql](https://github.com/DmitryOstroushko/OverdueLoans/blob/main/GetOverdueLoans.sql).  As a result (for the example above) the script creates a table below:  
 
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('12.12.2009',111110,111111,'RUR',12000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('25.12.2009',111110,111111,'RUR',5000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('12.12.2009',111110,122222,'RUR',10000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('12.01.2010',111110,111111,'RUR',-10100);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('20.11.2009',220000,222221,'RUR',25000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('20.12.2009',220000,222221,'RUR',20000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('31.12.2009',220001,222221,'RUR',-10000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('29.12.2009',111110,122222,'RUR',-10000);  
-INSERT INTO PDCL(Date,Customer,Deal,Currency,Sum) VALUES('27.11.2009',220001,222221,'RUR',-30000);  
-
-
-4. To get a report:  
-
-WITH transactions AS (
-  SELECT tmptab.Deal, tmptab.Date, tmptab.Sum, tmptab.AfterCurrentRowAmount, tmptab.RowNum,
-	CASE
-          WHEN (
-            COALESCE (
-              LAG(tmptab.AfterCurrentRowAmount) OVER (PARTITION BY tmptab.Deal ORDER BY tmptab.Deal, tmptab.Date), 0) <= 0
-          ) THEN tmptab.Date
-          ELSE NULL
-        END AS OverDueDate
-  FROM (
-      SELECT PDCL.Deal, PDCL.Date, PDCL.Sum,
-	SUM(PDCL.Sum) OVER (PARTITION BY Deal ORDER BY Date) AS AfterCurrentRowAmount,
-	ROW_NUMBER() OVER (PARTITION BY Deal ORDER BY Date DESC) AS RowNum
-      FROM PDCL
-    ) tmptab
-)
-SELECT *, date_part('day', current_timestamp - final_tbl.RunningOverDue::timestamp) OverDuePeriod
-FROM (
-SELECT transwrk.Deal, transwrk.AfterCurrentRowAmount,
-  CASE
-      WHEN transwrk.OverDueDate IS NOT NULL THEN transwrk.OverDueDate
-      WHEN transwrk.AfterCurrentRowAmount <= 0 THEN NULL
-      ELSE (SELECT max(tmptab_2.OverDueDate)
-              FROM transactions tmptab_2
-              WHERE transwrk.Deal = tmptab_2.Deal
-                AND tmptab_2.Date <= transwrk.Date
-            )
-      END AS RunningOverDue
-FROM transactions transwrk
-WHERE transwrk.RowNum = 1
-  AND transwrk.AfterCurrentRowAmount <> 0
-ORDER BY transwrk.Deal, transwrk.Date) AS final_tbl;
-
-
+  deal  | aftercurrentrowamount | runningoverdue | overdueperiod  
+--------+-----------------------+----------------+--------------- 
+ 111111 |                  6900 | 2009-12-12     |          4033 
+ 222221 |                  5000 | 2009-12-20     |          4025 
 
 This project is a very simple one with simultaneously 
