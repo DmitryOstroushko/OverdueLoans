@@ -25,15 +25,9 @@ After that the table PDCL will be filled with tha data.
 As a result (for the example above) the script creates a table below:  
 
 
-| LEFT | CENTER | RIGHT |
-|----------------|:---------:|----------------:|
-| По левому краю | По центру | По правому краю |
-| текст | текст | текст |
-
-
 |  Deal  | AfterCurrentRowAmount | RunningOverdue | OverduePeriod |  
 |:--------:|-----------------------:|:----------------:|---------------:|  
 |111111|6900 |2009-12-12|4033 |  
 |222221|5000 |2009-12-20|4025 |   
 
-This project is a very simple one with simultaneously 
+This project is a very simple. However it includes several useful features: Organize Complex Queries (WITH) and Window Functions with a condition.  
