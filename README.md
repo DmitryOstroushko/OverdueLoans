@@ -30,4 +30,4 @@ As a result (for the example above) the script creates a table below:
 |111111|6900 |2009-12-12|4033 |  
 |222221|5000 |2009-12-20|4025 |   
 
-This project is a very simple. However it includes several useful features: Organize Complex Queries (WITH) and Window Functions with a condition.  
+This project is a very simple. However it includes a number of useful features: Organize Complex Queries (WITH) and Window Functions with a condition.  
